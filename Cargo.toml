@@ -1,0 +1,8 @@
+[package]
+name = "spocky"
+version = "0.1.0"
+authors = ["@sha0coder <sha0@protonmail.com>"]
+
+[dependencies]
+csv = "0.15.0"
+rand="0.3.0"
