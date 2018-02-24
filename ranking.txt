@@ -1,3 +1,5 @@
+buy_one/sell_one
+
 ** Cycle: 500 pop: 1299 max fitness: 108121.71 avg: 18672 usd: 108121.71 eth: 36
 trader info:  $108121.71 & 36 eth
   sell opcodes: [12,0,2] [5,0,0] [13,1,0] [2,2,1] [4,2,2]  
@@ -13,5 +15,21 @@ trader info:  $108121.71 & 36 eth
 3: if v1 > v2
 4: v0 ++
 
+
+buy_one/sell_all
+** Cycle: 500 pop: 1299 max fitness: 295585.97 avg: 45344 usd: 295585.97 eth: 0
+trader info:  $295585.97 & 0 eth
+  sell opcodes: [4,1,2] [4,1,3] [1,0,1] [5,0,2] [13,1,2]  
+0: v1 /= v2 if divisible
+1: v1 /= v3 if divisible
+2: v0 += v1
+3: v0 ++
+4: if v1 < v2
+  buy opcodes: [3,3,0] [6,1,0] [0,0,3] [5,0,2] [9,0,2]  
+0: v3 *= v0 if not overflow
+1: v1 --
+2: v0 = v3
+3: v0 ++
+4: if v0 == v2
 
 
