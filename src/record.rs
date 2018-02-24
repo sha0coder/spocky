@@ -60,11 +60,11 @@ impl Record {
             let prize = Prize {
                 date: r[0].to_string(),
                 ts: r[1].parse::<usize>().unwrap(),
-                supply: r[2].parse::<f32>().unwrap() as i32,
-                cap: r[3].parse::<f32>().unwrap() as i32,
-                usd: usd as i32,
-                prev_usd: prev_usd,
-                first_usd: 0,
+                supply: r[2].parse::<f32>().unwrap() as i32,        // v1
+                cap: r[3].parse::<f32>().unwrap() as i32,           // v2
+                usd: usd as i32,                                    // v3
+                prev_usd: prev_usd,                                 // v4
+                first_usd: 0,                                       // v5
             };
 
             //[0], r[1].parse::<usize>().unwrap(), r[2].parse::<f32>().unwrap()

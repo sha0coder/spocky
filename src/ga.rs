@@ -50,20 +50,39 @@ impl GA {
         let mut sorted: Vec<usize> = Vec::new(); 
         
         for i in 0..self.population.len() {
+            // antes ordenar: println!("fitness: {}",self.population[i].get_fitness());
             sorted.push(i);
         }
 
+        // bubble sort
         for i in 0..self.population.len()-1 {
-            for j in 1..self.population.len() {
-                if self.population[sorted[j]].get_fitness() > self.population[sorted[i]].get_fitness() {
-                    tmp = sorted[j];
-                    sorted[j] = sorted[i];
-                    sorted[i] = tmp;
-                }
+            let mut k = i;
+            for j in i+1..self.population.len() {
+                if self.population[sorted[j]].get_fitness() > self.population[sorted[k]].get_fitness() {
+                    k = j;
+                }             
             }
+
+            tmp = sorted[k];
+            sorted[k] = sorted[i];
+            sorted[i] = tmp;
         }
 
+        /* verify sort:
+        for i in 0..self.population.len() {
+            println!("fitness: {}",self.population[sorted[i]].get_fitness());
+        }*/
+
         return sorted;
+    }
+
+    pub fn get_average(&self) -> i32 {
+        let mut sum:f32 = 0.0;
+        for i in 0..self.population.len() {
+            sum += self.population[i].get_usd();
+        }
+        sum /= self.population.len() as f32;
+        return sum as i32;
     }
 
     pub fn run(&mut self, num_cycles: usize, play: Play) {
@@ -78,8 +97,18 @@ impl GA {
 
             // clasify
             let sorted = self.sort();
-            println!("\n** Cycle: {} pop: {} max fitness: {} usd: {} eth: {}", cycle, self.population.len(), self.population[sorted[0]].get_fitness(), self.population[sorted[0]].get_usd(), self.population[sorted[0]].get_eth());
+            
+            println!("\n** Cycle: {} pop: {} max fitness: {} avg: {} usd: {} eth: {}", cycle, self.population.len(), self.population[sorted[0]].get_fitness(), self.get_average(), self.population[sorted[0]].get_usd(), self.population[sorted[0]].get_eth());
             self.population[sorted[0]].print_details();
+
+            if cycle == num_cycles {
+                // end, repeat winner showing the trace
+
+                let winner: &mut Trader = &mut self.population[sorted[0]];
+                winner.trace();
+                play.simulate(winner);
+                return;
+            }
 
 
             let mut ng: Vec<Trader> = Vec::new();

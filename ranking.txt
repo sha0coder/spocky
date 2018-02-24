@@ -1,0 +1,17 @@
+** Cycle: 500 pop: 1299 max fitness: 108121.71 avg: 18672 usd: 108121.71 eth: 36
+trader info:  $108121.71 & 36 eth
+  sell opcodes: [12,0,2] [5,0,0] [13,1,0] [2,2,1] [4,2,2]  
+0: if v0 <= v2
+1: v0 ++
+2: if v1 < v0
+3: v2 -= v1
+4: v2 /= v2 if divisible
+  buy opcodes: [12,1,2] [5,1,0] [4,1,2] [11,1,2] [5,0,0]  
+0: if v1 <= v2
+1: v1 ++
+2: v1 /= v2 if divisible
+3: if v1 > v2
+4: v0 ++
+
+
+

@@ -9,6 +9,7 @@ pub struct Trader {
     sell: Cpu,
     usd: f32,
     eth: f32,
+    doTrace: bool
 }
 
 impl Trader {
@@ -18,8 +19,13 @@ impl Trader {
             buy: Cpu::new(),
             sell: Cpu::new(),
             usd: 3000_f32,
-            eth: 0_f32
+            eth: 0_f32,
+            doTrace: false
         }
+    }
+
+    pub fn trace(&mut self) {
+        self.doTrace = true;
     }
 
     pub fn reset(&mut self) {
@@ -100,9 +106,13 @@ impl Trader {
     }
 
     pub fn mutate(&mut self, n: usize) {
-        // mutar solo uno?
-        //self.buy.mutate(n);
-        //self.sell.mutate(n);
+        if self.buy.get_rand(100) <= n {
+            if (self.buy.get_rand(2)==1) {
+                self.buy.mutate(n);
+            } else {
+                self.sell.mutate(n);
+            }
+        }
     }
 
     pub fn crossover(&self, pair: &Trader) -> (Trader, Trader) {
@@ -133,19 +143,56 @@ impl Trader {
         return (tr1, tr2);
     }
 
-    pub fn do_buy(&mut self, prize: f32) {
-        self.usd -= prize;
-        self.usd -= (FEES*prize/100.0);
-        self.eth += 1_f32;
+    pub fn do_buy_all(&mut self, prize: f32) {
+        if self.usd > 1.0 {
+            let vol_eth = prize/self.usd;
+
+            self.usd = 0.0;
+            self.eth -= (FEES*vol_eth/100.0);
+            self.eth += vol_eth;
+
+            if self.doTrace {
+                println!("buy {} saldo: {} eth: {}", prize, self.usd, self.eth);
+            }
+        }
     }
 
-    pub fn do_sell(&mut self, prize: f32) {
-        self.usd -= (FEES*prize/100.0);
-        self.eth -= 1_f32;
-        self.usd += prize;
+    pub fn do_sell_all(&mut self, prize: f32) {
+        if self.eth > 0.0 {
+            let vol_usd = prize * self.eth;
+
+            self.usd -= (FEES*vol_usd/100.0);
+            self.eth = 0.0;
+            self.usd += vol_usd;
+            if self.doTrace {
+                println!("sell {} saldo: {} eth: {}", prize, self.usd, self.eth);
+            }
+        }
     }
 
-    pub fn trade(&mut self, pr: &Prize, trace: bool)  {
+    pub fn do_buy_one(&mut self, prize: f32) {
+        if self.usd >= prize {
+            self.usd -= prize;
+            self.usd -= (FEES*prize/100.0);
+            self.eth += 1_f32; 
+            if self.doTrace {
+                println!("buy {} saldo: {} eth: {}", prize, self.usd, self.eth);
+            }
+        }
+    }
+
+    pub fn do_sell_one(&mut self, prize: f32) {
+        if self.eth > 0.0 {
+            self.usd -= (FEES*prize/100.0);
+            self.eth -= 1.0;
+            self.usd += prize;
+            if self.doTrace {
+                println!("sell {} saldo: {} eth: {}", prize, self.usd, self.eth);
+            }
+        }
+    }
+
+    pub fn trade(&mut self, pr: &Prize)  {
         let mut bought = false;
 
         if pr.usd < 2 {
@@ -155,33 +202,16 @@ impl Trader {
         self.buy.init_vars(pr.getVector());
         self.buy.run();
         if self.buy.result() == 1 {
-            if self.usd as i32 >= pr.usd {
-                
-                if trace {
-                    println!("buy {} saldo: {} eth: {}", pr.usd, self.usd, self.eth);
-                }
-
-                self.do_buy(pr.usd as f32);
-                bought = true;
-            }
-
+            self.do_buy_one(pr.usd as f32);
+            bought = true;
         }
 
         if !bought {
-
             self.sell.init_vars(pr.getVector());
             self.sell.run();
             if self.sell.result() == 1 {
-                if self.eth >= 1_f32 {
-                    
-                    if trace {
-                        println!("sell {} saldo: {} eth: {}", pr.usd, self.usd, self.eth);
-                    }
-                    
-                    self.do_sell(pr.usd as f32);
-                }
+               self.do_sell_all(pr.usd as f32);
             }
-
         }
     }
 }

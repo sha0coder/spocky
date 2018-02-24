@@ -18,18 +18,8 @@ impl Play {
             println!("init: {}",trader.get_usd());
         }
 
-        let mut trace: bool = true;
-        for i in 0..self.rec.sz() {
-            //let pr = self.rec.getPrize(i);
-            /*
-            let mut vpr: Vec<i32> = Vec::new();
-            vpr.push(0);
-            vpr.push(pr.supply);
-            vpr.push(pr.cap);
-            vpr.push(pr.usd); //TODO: es mucho mas rapido hacer la conversion en el load
-            */
-            trader.trade(self.rec.get_prize(i), trace);
-            trace = false;
+        for i in 0..self.rec.sz() {        
+            trader.trade(self.rec.get_prize(i));
         }
     }
 }
