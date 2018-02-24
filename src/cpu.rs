@@ -12,6 +12,7 @@ use std::vec::Vec;
 use cpu::rand::Rng;
 use instruction::Instruction;
 
+const NUM_OPCODES:u8 = 15; 
 
 pub struct Cpu {
     params: Vec<i32>,
@@ -102,7 +103,7 @@ impl Cpu {
             if i >= n {
                 break;
             }
-            self.add(rng.gen_range::<u8>(0,14), rng.gen_range::<usize>(0,num_vars), rng.gen_range::<usize>(0,num_vars));
+            self.add(rng.gen_range::<u8>(0,NUM_OPCODES), rng.gen_range::<usize>(0,num_vars), rng.gen_range::<usize>(0,num_vars));
             i+=1;
         }
         //println!("created");
@@ -263,7 +264,7 @@ impl Cpu {
                         self.code[i].set_a(rng.gen_range::<usize>(0,3));
                     }
                 } else {
-                    self.code[i].set_opcode(rng.gen_range::<u8>(0,14));
+                    self.code[i].set_opcode(rng.gen_range::<u8>(0,NUM_OPCODES));
                 }
             }
         }

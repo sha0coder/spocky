@@ -1,1 +1,1 @@
-/home/user/src/spocky/target/debug/spocky: /home/user/src/spocky/src/main.rs /home/user/src/spocky/src/ga.rs /home/user/src/spocky/src/cpu.rs /home/user/src/spocky/src/trader.rs /home/user/src/spocky/src/record.rs /home/user/src/spocky/src/play.rs /home/user/src/spocky/src/instruction.rs
+/home/user/src/spocky/target/debug/spocky: /home/user/src/spocky/src/cpu.rs /home/user/src/spocky/src/instruction.rs /home/user/src/spocky/src/ga.rs /home/user/src/spocky/src/trader.rs /home/user/src/spocky/src/record.rs /home/user/src/spocky/src/play.rs /home/user/src/spocky/src/main.rs

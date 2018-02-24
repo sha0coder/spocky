@@ -13,7 +13,7 @@ pub struct Prize {
 }
 
 impl Prize {
-    pub fn getVector(&self) -> Vec<i32> {
+    pub fn get_vector(&self) -> Vec<i32> {
         let mut vpr: Vec<i32> = Vec::new();
         vpr.push(0);
         vpr.push(self.supply);

@@ -13,15 +13,10 @@ use play::Play;
 use ga::GA;
 
 
-const GENERATIONS: usize = 500;
-const POPULATION: usize = 1000;
+const GENERATIONS: usize = 1000;
+const POPULATION: usize = 500;
 const INSTRUCTIONS: usize = 5;
 
-
-fn interrupt(_:i32) {
-    //ga.stats();
-    panic!();
-}
 
 fn main() {
     println!("Booting Spocky ...");
@@ -32,5 +27,6 @@ fn main() {
     let mut ga = GA::new();
     ga.init_population(POPULATION, INSTRUCTIONS);
     ga.run(GENERATIONS, play);
+
 }
 

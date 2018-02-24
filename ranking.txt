@@ -33,3 +33,42 @@ trader info:  $295585.97 & 0 eth
 4: if v0 == v2
 
 
+buy_all/sell_all
+** Cycle: 500 pop: 1299 max fitness: 1496952.1 avg: 221700 usd: 1496952.1 eth: 0
+trader info:  $1496952.1 & 0 eth
+  sell opcodes: [4,1,3] [5,0,2] [8,0,2] [13,2,1] [1,0,1]  
+0: v1 /= v3 if divisible
+1: v0 ++
+2: if v0 != v2
+3: if v2 < v1
+4: v0 += v1
+  buy opcodes: [9,4,3] [5,0,1] [3,1,0] [2,2,2] [13,2,1]  
+0: if v4 == v3
+1: v0 ++
+2: v1 *= v0 if not overflow
+3: v2 -= v2
+4: if v2 < v1
+buy 2 saldo: 0 eth: 1494
+sell 1006 saldo: 1496952.1 eth: 0
+
+
+
+** Cycle: 1000 pop: 1299 max fitness: 1185252.4 avg: 174823 usd: 1185252.4 eth: 0
+trader info:  $1185252.4 & 0 eth
+  sell opcodes: [4,2,0] [4,2,1] [12,2,1] [10,1,1] [5,0,0]  
+0: v2 /= v0 if divisible
+1: v2 /= v1 if divisible
+2: if v2 <= v1
+3: if v1 >= v1
+4: v0 ++
+  buy opcodes: [4,1,4] [11,2,1] [11,4,1] [5,0,5] [13,4,4]  
+0: v1 /= v4 if divisible        if cap>supply/cap & prize > supply
+1: if v2 > v1
+2: if v4 > v1
+3: v0 ++
+4: if v4 < v4
+buy 3 saldo: 0 eth: 996
+sell 1117 saldo: 1108081.9 eth: 0
+buy 984 saldo: 0 eth: 1121.5951
+sell 1061 saldo: 1185252.4 eth: 0
+
