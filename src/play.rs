@@ -1,6 +1,8 @@
 use trader::Trader;
 use record::Record;
 
+const VALIDATION:usize = 100;
+
 pub struct Play {
     rec: Record
 }
@@ -18,7 +20,14 @@ impl Play {
             println!("init: {}",trader.get_usd());
         }
 
-        for i in 0..self.rec.sz() {        
+        for i in 0..(self.rec.sz()-VALIDATION) {        
+            trader.trade(self.rec.get_prize(i));
+        }
+    }
+
+    pub fn validate(&self, trader: &mut Trader) {
+        trader.reset();
+        for i in (self.rec.sz()-VALIDATION)..self.rec.sz() {        
             trader.trade(self.rec.get_prize(i));
         }
     }

@@ -13,7 +13,7 @@ use play::Play;
 use ga::GA;
 
 
-const GENERATIONS: usize = 1000;
+const GENERATIONS: usize = 500;
 const POPULATION: usize = 500;
 const INSTRUCTIONS: usize = 5;
 
@@ -26,7 +26,6 @@ fn main() {
     let play = Play::new(rec);
     let mut ga = GA::new();
     ga.init_population(POPULATION, INSTRUCTIONS);
-    ga.run(GENERATIONS, play);
-
+    let winner = ga.run(GENERATIONS, play);
 }
 

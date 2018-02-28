@@ -85,7 +85,7 @@ impl GA {
         return sum as i32;
     }
 
-    pub fn run(&mut self, num_cycles: usize, play: Play) {
+    pub fn run(&mut self, num_cycles: usize, play: Play) -> Option<&Trader> {
 
         for cycle in 1..num_cycles+1 {
 
@@ -104,10 +104,17 @@ impl GA {
             if cycle == num_cycles {
                 // end, repeat winner showing the trace
 
+
                 let winner: &mut Trader = &mut self.population[sorted[0]];
                 winner.trace();
-                play.simulate(winner);
-                return;
+                play.validate(winner);
+                if winner.get_usd() < 3000 {
+
+                }
+                
+                //play.simulate(winner);
+                //play.validate(winner);
+                return Some(winner);
             }
 
 
@@ -169,6 +176,8 @@ impl GA {
 
             self.population = ng;
         }
+
+        return None;
     }
 }
 
