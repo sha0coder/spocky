@@ -1,0 +1,16 @@
+
+
+self.__coinlisturl = 'https://www.cryptocompare.com/api/data/coinlist/'
+		self.__priceurl = 'https://min-api.cryptocompare.com/data/price?'
+		self.__pricemultiurl = 'https://min-api.cryptocompare.com/data/pricemulti?'
+		self.__pricemultifullurl = 'https://min-api.cryptocompare.com/data/pricemultifull?'
+		self.__generateavgurl = 'https://min-api.cryptocompare.com/data/generateAvg?'
+		self.__dayavgurl = 'https://min-api.cryptocompare.com/data/dayAvg?'
+		self.__historicalurl = 'https://min-api.cryptocompare.com/data/pricehistorical?'
+		self.__coinsnapshoturl = 'https://www.cryptocompare.com/api/data/coinsnapshot/?'
+self.__coinsnapshotfull = 'https://www.cryptocompare.com/api/data/coinsnapshotfullbyid/?'
+
+
+
+
+

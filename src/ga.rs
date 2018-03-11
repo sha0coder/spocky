@@ -16,16 +16,16 @@ pub struct GA {
     population: Vec<Trader>,
     mutation_probability: u16,
     sz: usize,
-    num_instructions: usize
+    play: Play
 }
 
 impl GA {
-    pub fn new() -> GA {
+    pub fn new(play: Play) -> GA {
         GA {
             population: Vec::new(),
             mutation_probability: 2,
             sz: 0,
-            num_instructions: 10
+            play
         }
     }
 
@@ -35,17 +35,15 @@ impl GA {
         return rng.gen_range::<usize>(0,n);
     }
 
-    pub fn init_population(&mut self, population_sz: usize, num_instructions: usize) {
+    pub fn init_population(&mut self, population_sz: usize) {
         self.sz = population_sz;
         for _ in 0..population_sz {
-            let mut trader = Trader::new();
-            trader.randomize(num_instructions);
-            self.num_instructions = num_instructions;
+            let trader = Trader::new();
             self.population.push(trader);
         }
     }
 
-    pub fn sort(&mut self) -> Vec<usize>  {
+    fn sort(&mut self) -> Vec<usize>  {
         let mut tmp: usize;
         let mut sorted: Vec<usize> = Vec::new(); 
         
@@ -60,13 +58,23 @@ impl GA {
             for j in i+1..self.population.len() {
                 if self.population[sorted[j]].get_fitness() > self.population[sorted[k]].get_fitness() {
                     k = j;
-                }             
+                } else if self.population[sorted[j]].get_fitness() == self.population[sorted[k]].get_fitness() {
+                    if self.population[sorted[j]].code_sz() > self.population[sorted[k]].code_sz() {
+                        k = j;
+                    }
+                }
             }
 
             tmp = sorted[k];
             sorted[k] = sorted[i];
             sorted[i] = tmp;
         }
+
+
+        // IDEA: si el fitness es el mismo, gana el codigo mas pequeño?
+
+
+
 
         /* verify sort:
         for i in 0..self.population.len() {
@@ -85,43 +93,53 @@ impl GA {
         return sum as i32;
     }
 
-    pub fn run(&mut self, num_cycles: usize, play: Play) -> Option<&Trader> {
+    pub fn validate(&mut self, mut trader:Trader, expected_fitness:f32) -> bool {
+        println!("Starting validation ...");
+        trader.reset();
+        self.play.validate(&mut trader);
+        if trader.get_usd() > expected_fitness {
+            println!("target reached!! usd:{} cryptos:{}", trader.get_usd(), trader.get_eth());
+            trader.reset();
+            trader.trace();
+            self.play.play_all(&mut trader);
+            println!("final score: usd:{} cryptos:{}", trader.get_usd(), trader.get_eth());
+            trader.optimize();
+            return true;
+        }
+        return false;
+    }
+
+    pub fn train(&mut self, num_cycles: usize) -> Option<Trader> {
+
+        for i in 0..self.population.len() {
+            self.population[i].randomize();
+        }
 
         for cycle in 1..num_cycles+1 {
 
             // evaluate
             for i in 0..self.population.len() {
-                let trader: &mut Trader = &mut self.population[i];
-                play.simulate(trader);
+                let mut trader: &mut Trader = &mut self.population[i];
+                //trader.optimize();
+                self.play.simulate(trader);
             }
 
             // clasify
             let sorted = self.sort();
             
-            println!("\n** Cycle: {} pop: {} max fitness: {} avg: {} usd: {} eth: {}", cycle, self.population.len(), self.population[sorted[0]].get_fitness(), self.get_average(), self.population[sorted[0]].get_usd(), self.population[sorted[0]].get_eth());
+            println!("** Cycle: {} pop: {} avg: {}  balance: usd: {} cryptos: {}", cycle, self.population.len(), self.get_average(), self.population[sorted[0]].get_usd(), self.population[sorted[0]].get_eth());
             self.population[sorted[0]].print_details();
 
+            // TRAINING FINISHED!!
             if cycle == num_cycles {
-                // end, repeat winner showing the trace
-
-
-                let winner: &mut Trader = &mut self.population[sorted[0]];
-                winner.trace();
-                play.validate(winner);
-                if winner.get_usd() < 3000 {
-
-                }
-                
-                //play.simulate(winner);
-                //play.validate(winner);
+                let winner:Trader = self.population[sorted[0]].clone();
                 return Some(winner);
             }
 
-
             let mut ng: Vec<Trader> = Vec::new();
 
-            // crossover top 50, looking for the best individual to pair
-            for i in 0..49 {
+            // crossover top 10%, looking for the best individual to pair
+            for i in 0..(10*self.sz/100) {
                 let father = &self.population[sorted[i]];
                 let mother = &self.population[sorted[i+1]];
 
@@ -133,6 +151,8 @@ impl GA {
                 tr1.set_sell(mother.clone_sell());
                 tr2.set_buy(mother.clone_buy());
                 tr2.set_sell(father.clone_sell());
+                tr1.optimize();
+                tr2.optimize();
 
                 ng.push(tr1);
                 ng.push(tr2);
@@ -153,7 +173,7 @@ impl GA {
             }
 
             // diversity
-            for _ in 0..100 {
+            for _ in 0..10 {
                 let r = self.get_rand(self.population.len());
                 ng.push(self.population[r].clone());
             }
@@ -165,11 +185,11 @@ impl GA {
                 ng[i].mutate(25);
             }
 
-            // 100 news
+            // new ones random
             let mut trader;
-            for _ in 0..1000 {
+            while ng.len()<self.sz {
                 trader = Trader::new();
-                trader.randomize(self.num_instructions);
+                trader.randomize();
                 ng.push(trader);
             }
 

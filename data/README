@@ -1,0 +1,8 @@
+El sample de be estar separado por comas, y la primera columna se tomará como precio para tradear.
+El precio a tradear debería ser precio de cierre, de lo contrario la IA predecirá el precio en base al de cierre.
+
+Cambios a hacer en el codigo:
+ - en el main seleccionar el path del fichero, ruta completa por ahora.
+ - en cpu.rs en el constructor hadcodear el numero de columnas +3, TODO: modificar esto para que no haga falta hardcodear
+ - en trader.rs fijar el dinero inicial
+

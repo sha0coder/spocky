@@ -72,3 +72,37 @@ sell 1117 saldo: 1108081.9 eth: 0
 buy 984 saldo: 0 eth: 1121.5951
 sell 1061 saldo: 1185252.4 eth: 0
 
+
+
+
+
+
+
+
+** Cycle: 1000 pop: 1299 max fitness: 1835011.6 avg: 259538 usd: 1835011.6 eth: 0
+trader info:  $1835011.6 & 0 eth
+  sell opcodes: [6,0,1] [2,0,4] [0,2,0] [1,0,3] [3,0,2]  
+0: v0 --
+1: v0 -= v4
+2: v2 = v0
+3: v0 += v3
+4: v0 *= v2 if not overflow
+  buy opcodes: [1,0,2] [4,0,2] [2,0,3] [1,0,4] [7,2,1]  
+0: v0 += v2
+1: v0 /= v2 if divisible
+2: v0 -= v3
+3: v0 += v4
+4: v2 = 0
+buy_all prize: 2 balance: 0 eth: 1494 supply: 76784856 cap: 161 
+sell_all prize: 222 balance: 330341.3 eth: 0 supply: 92155872 cap: 20462 
+buy_all prize: 202 balance: 0 eth: 1628.8116 supply: 93601560 cap: 18994 
+sell_all prize: 332 balance: 538602.4 eth: 0 supply: 94263264 cap: 31376 
+buy_all prize: 347 balance: 0 eth: 1545.9596 supply: 94300328 cap: 32784 
+sell_all prize: 298 balance: 458853.2 eth: 0 supply: 95046784 cap: 28367 
+buy_all prize: 302 balance: 0 eth: 1513.304 supply: 95077680 cap: 28798 
+sell_all prize: 338 balance: 509450.75 eth: 0 supply: 95108432 cap: 32223 
+buy_all prize: 296 balance: 0 eth: 1714.2329 supply: 95323352 cap: 28249 
+sell_all prize: 306 balance: 522457.03 eth: 0 supply: 95424856 cap: 29276 
+buy_all prize: 296 balance: 0 eth: 1757.9973 supply: 95567344 cap: 28366 
+sell_all prize: 1048 balance: 1835011.6 eth: 0 supply: 97169456 cap: 101889 
+
