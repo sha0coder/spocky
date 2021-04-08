@@ -1,6 +1,7 @@
 # spocky
 Genetic Algorithm to evolve ethereum traders, powered by Rust.
-It creates intepreted codes automatically that are the trading strategy to buy and sell.
+
+It creates intepreted codes automatically, that are the trading strategies to buy and/or sell.
 
 Normally GA's are used to optimized constants but really can be used to evolve code as long as the evaluation function could drive the evolution.
 
