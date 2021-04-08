@@ -27,7 +27,7 @@ fn test() {
 fn Spocky_AI() {
     println!("Booting Spocky ...");
     let mut rec = Record::new();
-    rec.load("/home/user/src/spocky/data/bitcoin.csv");
+    rec.load("data/bitcoin.csv");
 
     let play = Play::new(rec);
     let mut ga = GA::new(play);
@@ -49,8 +49,6 @@ fn Spocky_AI() {
     }
 }
 
-
 fn main() {
     Spocky_AI();
 }
-
